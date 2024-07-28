@@ -1,12 +1,13 @@
-# Usar a imagem oficial do MongoDB
 FROM mongo
 
-# Configurar variáveis de ambiente para autenticação e o banco de dados inicial
+# Configura variáveis de ambiente
 ENV MONGO_INITDB_ROOT_USERNAME=motoboy
 ENV MONGO_INITDB_ROOT_PASSWORD=motoboy
 ENV MONGO_INITDB_DATABASE=motoboy
 
-# A porta 27017 é exposta por padrão pela imagem oficial do MongoDB
-EXPOSE 27017
+# Copiar certificado SSL e chave para o container
+COPY ./mongo-ssl-cert.pem /etc/ssl/mongo-ssl-cert.pem
+COPY ./mongo-ssl-key.pem /etc/ssl/mongo-ssl-key.pem
 
-# A imagem do MongoDB já contém um ENTRYPOINT padrão para iniciar o servidor
+# Habilitar SSL no MongoDB
+CMD ["mongod", "--port", "27017", "--sslMode", "requireSSL", "--sslPEMKeyFile", "/etc/ssl/mongo-ssl-cert.pem", "--sslCAFile", "/etc/ssl/mongo-ssl-key.pem", "--auth", "--bind_ip_all"]
