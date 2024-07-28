@@ -1,0 +1,15 @@
+# Dockerfile.mongo-express
+FROM mongo-express
+
+# Configura variáveis de ambiente para conexão ao MongoDB e autenticação básica
+ENV ME_CONFIG_BASICAUTH_USERNAME=motoboy
+ENV ME_CONFIG_BASICAUTH_PASSWORD=motoboy
+ENV ME_CONFIG_MONGODB_ADMINUSERNAME=motoboy
+ENV ME_CONFIG_MONGODB_ADMINPASSWORD=motoboy
+ENV ME_CONFIG_MONGODB_PORT=27017
+ENV ME_CONFIG_MONGODB_URL="mongodb://motoboy:motoboy@mongo:27017/?authMechanism=DEFAULT"
+
+# A porta 8081 precisa ser exposta
+EXPOSE 8081
+
+# A imagem do Mongo Express já contém um ENTRYPOINT padrão para iniciar o servidor

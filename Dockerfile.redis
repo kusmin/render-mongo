@@ -1,0 +1,7 @@
+# Dockerfile.redis
+FROM redis:latest
+
+# A porta padrão do Redis, 6379, é exposta
+EXPOSE 6379
+
+# A imagem do Redis já possui um ENTRYPOINT padrão para iniciar o servidor

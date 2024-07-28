@@ -1,0 +1,56 @@
+services:
+  # MongoDB Service
+  - type: pserv
+    name: mongo
+    env: docker
+    dockerfilePath: ./Dockerfile.mongo
+    plan: starter
+    envVars:
+      - key: MONGO_INITDB_ROOT_USERNAME
+        value: motoboy
+      - key: MONGO_INITDB_ROOT_PASSWORD
+        value: motoboy
+      - key: MONGO_INITDB_DATABASE
+        value: motoboy
+    disks:
+      - name: mongo
+        mountPath: /data/db
+        sizeGB: 10
+
+  # Mongo Express Service
+  - type: pserv
+    name: mongo-express
+    env: docker
+    dockerfilePath: ./Dockerfile.mongo-express
+    plan: starter
+    envVars:
+      - key: ME_CONFIG_BASICAUTH_USERNAME
+        value: motoboy
+      - key: ME_CONFIG_BASICAUTH_PASSWORD
+        value: motoboy
+      - key: ME_CONFIG_MONGODB_PORT
+        value: '27017'
+      - key: ME_CONFIG_MONGODB_ADMINUSERNAME
+        value: motoboy
+      - key: ME_CONFIG_MONGODB_ADMINPASSWORD
+        value: motoboy
+      - key: ME_CONFIG_MONGODB_URL
+        value: "mongodb://motoboy:motoboy@mongo:27017/?authMechanism=DEFAULT"
+    dependencies:
+      - mongo
+
+  # Redis Service
+  - type: pserv
+    name: redis
+    env: docker
+    dockerfilePath: ./Dockerfile.redis
+    plan: starter
+    envVars:
+      - key: REDIS_CONFIG
+        value: default-config # This is an example; adjust as necessary
+
+# Declare persistent disk storage for MongoDB
+disks:
+  - name: mongo
+    path: /data/db
+    sizeGB: 10
